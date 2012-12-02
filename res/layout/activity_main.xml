@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+    <EditText 
+        android:id="@+id/address_line_1"
+        android:layout_alignParentTop="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textFilter"
+        android:hint="9999 Random House"
+        />
+    <EditText 
+        android:id="@+id/address_line_2"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/address_line_1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textFilter"
+        android:hint="Bloomberg, CA"
+        />
+    
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/address_line_2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:onClick="submit_address"
+        />
+    
+    <Button 
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:onClick="launch_alarm_view"
+        android:text="Alarm View"
+        />
+    <TextView
+        android:id="@+id/stdout_textview"
+        android:layout_below="@id/submit_button"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+       /> 
+        </RelativeLayout>
