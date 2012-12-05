@@ -20,36 +20,17 @@ public class LaunchNotification extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		SQLiteDatabase database;
-		AlarmDB alarmdb = new AlarmDB(this);
-		String[] allColumns = {AlarmDB.COLUMN_ID, AlarmDB.COLUMN_DEST, 
-				AlarmDB.COLUMN_ARRIVALTIME, AlarmDB.COLUMN_DEPTTIME};
-		database = alarmdb.getWritableDatabase();
+
 		
 		// Get variables from intent
 		Bundle extras = getIntent().getExtras();
 		String title = extras.getString("title");
 		String body = extras.getString("body");
 		String dest = extras.getString("destination");
-		long arrivalTime = extras.getLong("arrivalTime");
-		long deptTime = extras.getLong("deptTime");
+		long arrivalTime = extras.getLong("arrival_time");
+		long deptTime = extras.getLong("dept_time");
 		
-		
-		// Create database entry
-		ContentValues values = new ContentValues();
-		values.put(AlarmDB.COLUMN_DEST, dest);
-		values.put(AlarmDB.COLUMN_ARRIVALTIME, arrivalTime);
-		values.put(AlarmDB.COLUMN_DEPTTIME, deptTime);
-		
-		database.insert(AlarmDB.TABLE_NAME, null, values);
-		
-		// Sets notification
-
-		Cursor cursor = database.rawQuery("select _id from alarms where destination = ? and arrivalTime = ? and deptTime = ?", new String[] {dest, "" + arrivalTime, "" + deptTime});
-		cursor.moveToFirst();
-		Log.e("TAG", "ID: " + cursor.getLong(0));
-		
+		title = "" + title.replace("[", "").replace("]", "");
 		// Set and launch notification
 		Intent intent = new Intent(this, CancelAlarm.class);
 		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);

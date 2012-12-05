@@ -27,7 +27,7 @@
         android:onClick="launch_set_alarm"
         />
 </LinearLayout>
-	<LinearLayout
+<LinearLayout
 	    android:layout_height="fill_parent"
 	    android:layout_width="fill_parent"
 		android:background="@drawable/rounded_edges"
@@ -39,17 +39,12 @@
         android:layout_marginBottom="2dp"
 		>
 
-		<ListView
-		    android:id="@+id/listView1"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1" >
-		</ListView>
+
 
 	    <TextView 
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
-	        android:text="Test"
+	        android:text="Once you add an alarm it will show up here"
 	        android:padding="20dp"
 	        />
 	</LinearLayout>

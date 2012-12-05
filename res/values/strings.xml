@@ -11,5 +11,6 @@
     <string name="title_activity_cancel_alarm">CancelAlarm</string>
     <string name="title_activity_update_alarm">UpdateAlarm</string>
     <string name="title_activity_dbview">DBView</string>
+    <string name="title_activity_update__alarm">Update_Alarm</string>
 
 </resources>

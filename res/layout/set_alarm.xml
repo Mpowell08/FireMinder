@@ -1,44 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#242424" >
+    android:layout_height="match_parent" >
     
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+    android:layout_margin="10dp"
+    android:id="@+id/toprow"
+    android:clickable="true"
+    android:onClick="timepickerbutton" >
+
+
     <TextView
         android:id="@+id/timepicker_tag"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Arrival Time"
-        android:textSize="24dp"
-        android:layout_marginLeft="10dp"
-        android:layout_alignParentLeft="true"
-        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TimePicker
-        android:id="@+id/arrival_time_tp"
-        android:layout_below="@+id/timepicker_tag"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        />
-    <TextView 
-        android:id="@+id/description"
-        android:layout_below="@+id/arrival_time_tp"
-        android:textSize="24dp" android:text="Description"  android:textColor="#FFFFFF"
-        android:layout_alignParentLeft="true"
-        android:layout_height="wrap_content" android:layout_marginLeft="10dp" 
-        android:layout_marginTop="24dp"
+        android:layout_alignParentTop="true"
+        android:text="Arrival Time:"
+        android:textSize="16sp" >
+    </TextView>
+    
+    <TextView
+        android:id="@+id/time_chosen"
         android:layout_width="wrap_content"
-        />
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/TextView01"
+        android:layout_alignParentRight="true"
+        android:text="11:30"
+        android:textSize="16sp"
+        ></TextView>
+
+    
+
+</RelativeLayout>
+
+<View 
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_below="@+id/toprow"
+    android:background="#FFFFFF"/>
+<View 
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_below="@+id/botrow"
+    android:background="#FFFFFF"/>
+<View 
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_below="@+id/destination"
+    android:background="#FFFFFF"/>
+
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-		android:layout_below="@+id/description"
+        android:layout_below="@+id/botrow"
 		android:id="@+id/destination"
 		android:layout_margin="10dp"
-		android:hint="Pennsylvania Ave. or CSUEB"
+		android:hint="Where do you want to go?"
 		android:lines="1"
         />
+    <RelativeLayout
+        android:layout_below="@+id/toprow"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:id="@+id/botrow"
+    android:clickable="true"
+    android:onClick="datepickerbutton" >
+
+
+    <TextView
+        android:id="@+id/datepicker_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Arrival Date:"
+        android:textSize="16sp" >
+    </TextView>
+    
+    <TextView
+        android:id="@+id/date_chosen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/TextView01"
+        android:layout_alignParentRight="true"
+        android:text="11/30"
+        android:textSize="16sp"
+        ></TextView>
+
+    
+
+</RelativeLayout>
+    
     <Button
         android:id="@+id/done_button"
         android:text="Done"
@@ -46,6 +102,7 @@
         android:layout_width="fill_parent"
         android:layout_alignParentBottom="true"
         />
-	
+
+   
 
 </RelativeLayout>

@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -38,7 +39,8 @@
         </activity>
         <activity
             android:name="com.fireminder.fireminder.SetAlarm"
-            android:label="@string/title_activity_set_alarm" >
+            android:label="@string/title_activity_set_alarm"
+            android:theme="@style/Holo.Theme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,6 +65,10 @@
         <activity
             android:name="com.fireminder.fireminder.DBView"
             android:label="@string/title_activity_dbview" >
+        </activity>
+        <activity
+            android:name="com.fireminder.fireminder.Update_Alarm"
+            android:label="@string/title_activity_update__alarm" >
         </activity>
     </application>
 
