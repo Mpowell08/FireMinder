@@ -185,6 +185,13 @@ public class SetAlarm extends Activity{
 	public void SetupInit(){
 		findViewsById();
 		done_button.setOnClickListener(arrival_time_listener);
+		//Initial time and date variables
+		Calendar current = Calendar.getInstance();
+		current_hour = current.getTime(Calendar.HOUR_OF_DAY);
+		current_minute = current.getTime(Calendar.MINUTE);
+		current_day = current.getTime(Calendar.DAY_OF_MONTH);
+		current_month = current.getTime(Calendar.MONTH);
+		current_year = current.getTime(Calendar.YEAR);
 	}
 	public void findViewsById(){
 		done_button = (Button) findViewById(R.id.done_button);
