@@ -54,6 +54,7 @@
         </activity>
         <activity
             android:name="com.fireminder.fireminder.CancelAlarm"
+            android:theme="@style/Holo.Theme.NoActionBar"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_cancel_alarm" >
         </activity>

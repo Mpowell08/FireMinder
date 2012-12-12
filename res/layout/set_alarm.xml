@@ -29,7 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/TextView01"
         android:layout_alignParentRight="true"
-        android:text="11:30"
         android:textSize="16sp"
         ></TextView>
 
@@ -87,7 +86,6 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/TextView01"
         android:layout_alignParentRight="true"
-        android:text="11/30"
         android:textSize="16sp"
         ></TextView>
 

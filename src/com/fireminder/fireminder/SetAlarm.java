@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.holoeverywhere.app.DatePickerDialog;
+import org.holoeverywhere.app.Dialog;
+import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.app.DatePickerDialog.OnDateSetListener;
 import org.holoeverywhere.app.TimePickerDialog;
 import org.holoeverywhere.app.TimePickerDialog.OnTimeSetListener;
@@ -42,12 +44,9 @@ public class SetAlarm extends Activity{
 	Location current_location;
 	TextView tv1;
 	DistanceMatrix distance_matrix;
-
-	Integer current_hour;
-	Integer current_minute;
-	Integer current_day;
-	Integer current_month;
-	Integer current_year;
+	ArrivalTimeGen atg;
+	
+	Dialog dialog;
 	static final Integer notificationID = 139381;
 	@Override
 	public void onCreate(Bundle b){
@@ -61,6 +60,7 @@ public class SetAlarm extends Activity{
 	@Override
 	public void onPause(){
 		super.onPause();
+		dialog.dismiss();
 		lm.removeUpdates(ll);
 	}
 
@@ -73,7 +73,10 @@ public class SetAlarm extends Activity{
 
 		public void onDateSet(org.holoeverywhere.widget.DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
-			current_year = year; current_month = monthOfYear; current_day = dayOfMonth;
+			atg.setArrivalYear(year);
+			atg.setARRIVAL_MONTH(monthOfYear);
+			atg.setArrivalDay(dayOfMonth);
+			//current_year = year; current_month = monthOfYear; current_day = dayOfMonth;
 			TextView tv2 = (TextView) findViewById(R.id.date_chosen);
 			monthOfYear++;
 			tv2.setText(""+monthOfYear+"/"+dayOfMonth+"/"+year);
@@ -81,12 +84,9 @@ public class SetAlarm extends Activity{
 		
 	};
 	final OnTimeSetListener otsl = new OnTimeSetListener(){
-
-
-
 		public void onTimeSet(org.holoeverywhere.widget.TimePicker view,
 				int hourOfDay, int minute) {
-			current_hour = hourOfDay; current_minute = minute;
+			atg.setARRIVAL_HOUR(hourOfDay); atg.setARRIVAL_MINUTE(minute);
 			String helper="";
 			if(minute == 0) {helper = "" + 0;}
 			TextView tv = (TextView) findViewById(R.id.time_chosen);
@@ -111,14 +111,11 @@ public class SetAlarm extends Activity{
 		public void onClick(View v) {
 			if(current_location != null){
 				Calendar arrival_calendar = Calendar.getInstance();
-			//	current_hour = arrival_time_tp.getCurrentHour();
-			//	current_minute = arrival_time_tp.getCurrentMinute();
-				
-				arrival_calendar.set(Calendar.DAY_OF_MONTH, current_day);
-				arrival_calendar.set(Calendar.MONTH, current_month);
-				arrival_calendar.set(Calendar.YEAR, current_year);
-				arrival_calendar.set(Calendar.HOUR_OF_DAY, current_hour);
-				arrival_calendar.set(Calendar.MINUTE, current_minute);
+				arrival_calendar.set(Calendar.DAY_OF_MONTH, atg.getArrivalDay());
+				arrival_calendar.set(Calendar.MONTH, atg.getARRIVAL_MONTH());
+				arrival_calendar.set(Calendar.YEAR, atg.getARRIVAL_YEAR());
+				arrival_calendar.set(Calendar.HOUR_OF_DAY, atg.getARRIVAL_HOUR());
+				arrival_calendar.set(Calendar.MINUTE, atg.getARRIVAL_MINUTE());
 				distance_matrix = new DistanceMatrix(destination.getEditableText().toString(), current_location, arrival_calendar.getTimeInMillis());
 				GetDistanceMatrix gdm = new GetDistanceMatrix();
 				gdm.execute(distance_matrix);
@@ -139,13 +136,13 @@ public class SetAlarm extends Activity{
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(distance_matrix.arrival_time - distance_matrix.duration);
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy hh:mm aaa");
+			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aaa");
 			
 			//Output the guesstimated time
-			Toast.makeText(getApplicationContext(), sdf.format(calendar.getTime()), Toast.LENGTH_LONG).show();	
+			Toast.makeText(getApplicationContext(), sdf.format(calendar.getTime()) + "\n" + distance_matrix.destination, Toast.LENGTH_LONG).show();	
 			
 			//Notifications
-			String body = "Leave for " + distance_matrix.destination + "at" + sdf.format(calendar.getTime());
+			String body = "Leave for " + distance_matrix.destination + " at " + sdf.format(calendar.getTime());
 			String title = "" + sdf.format(calendar.getTime());
 
 			Intent alarmIntent = new Intent(getApplicationContext(), LaunchNotification.class);
@@ -186,12 +183,13 @@ public class SetAlarm extends Activity{
 		findViewsById();
 		done_button.setOnClickListener(arrival_time_listener);
 		//Initial time and date variables
-		Calendar current = Calendar.getInstance();
-		current_hour = current.getTime(Calendar.HOUR_OF_DAY);
-		current_minute = current.getTime(Calendar.MINUTE);
-		current_day = current.getTime(Calendar.DAY_OF_MONTH);
-		current_month = current.getTime(Calendar.MONTH);
-		current_year = current.getTime(Calendar.YEAR);
+		Calendar calendar = Calendar.getInstance();
+		atg = new ArrivalTimeGen(calendar.get(Calendar.MINUTE),
+		calendar.get(Calendar.HOUR_OF_DAY),
+		calendar.get(Calendar.DAY_OF_MONTH),
+		calendar.get(Calendar.MONTH),
+		calendar.get(Calendar.YEAR));
+
 	}
 	public void findViewsById(){
 		done_button = (Button) findViewById(R.id.done_button);
@@ -214,6 +212,7 @@ public class SetAlarm extends Activity{
 
 				public void onLocationChanged(Location arg0) {
 					current_location = arg0;
+					Log.e("tag", "" + current_location.toString());
 				}
 
 				public void onProviderDisabled(String arg0) {
@@ -232,8 +231,18 @@ public class SetAlarm extends Activity{
 				}
 	    		
 	    	};
-	    	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIME_MS, 0, ll);
-	    //	lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_TIME_MS, 0, ll);
-	    	current_location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	    	lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_TIME_MS, 0, ll);
+	    	Runnable showWaitScreen = new Runnable() {
+
+				public void run() {
+					while(current_location == null) {
+						current_location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+					}
+					dialog.dismiss();
+				}
+	    	};
+	    	dialog = ProgressDialog.show(this, "Hold on a bit...", "We're getting your location ...", true);
+	    	Thread t = new Thread(showWaitScreen);
+	    	t.start();
 	    }
 }

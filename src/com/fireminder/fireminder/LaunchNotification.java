@@ -30,9 +30,13 @@ public class LaunchNotification extends Activity {
 		long arrivalTime = extras.getLong("arrival_time");
 		long deptTime = extras.getLong("dept_time");
 		
-		title = "" + title.replace("[", "").replace("]", "");
 		// Set and launch notification
 		Intent intent = new Intent(this, CancelAlarm.class);
+		intent.putExtra("destination", dest);
+		intent.putExtra("arrival_time", arrivalTime);
+		intent.putExtra("dept_time", deptTime);
+		intent.putExtra("title", title);
+		intent.putExtra("body", body);
 		PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
 		Notification n = new NotificationCompat.Builder(this).setContentText(body)
 		.setContentIntent(pi)

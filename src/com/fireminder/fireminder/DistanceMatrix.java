@@ -73,6 +73,7 @@ public class DistanceMatrix {
 				JSONObject rootObject = new JSONObject(result); // Parse the JSON to a JSONObject
 				this.status = rootObject.getString("status");
 				this.destination = rootObject.getString("destination_addresses");
+				
 				this.origin = rootObject.getString("origin_addresses");
 				
 			
